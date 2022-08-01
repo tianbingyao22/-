@@ -5,47 +5,90 @@
         src="http://likede2-admin.itheima.net/img/logo.595745bd.png"
         alt=""
         class="login-logo"
-      >
-      <el-input
-        v-model="phone"
-        placeholder="请输入手机号"
-        prefix-icon="el-icon-mobile-phone"
       />
-      <el-input
-        v-model="password"
-        placeholder="请输入密码"
-        prefix-icon="el-icon-lock"
-        suffix-icon="el-icon-view"
-      />
-      <el-input
-        v-model="code"
-        placeholder="请输入验证码"
-        prefix-icon="el-icon-mobile-phone"
-        class="yanzhengma"
+      <el-form
+        :model="ruleForm"
+        :rules="rules"
+        ref="ruleForm"
+        label-width="100px"
+        class="demo-ruleForm"
       >
-        <template #suffix>
-          <img src="https://likede2-java.itheima.net/api/user-service/user/imageCode/g67VGWhi4WVFjiHOEOOAQoxzVzoIJUq2" alt="">
-        </template>
-      </el-input>
-      <el-button type="primary">登录</el-button>
+        <el-form-item prop="phone">
+          <el-input
+            v-model="ruleForm.phone"
+            placeholder="请输入账号"
+            prefix-icon="el-icon-mobile-phone"
+          />
+        </el-form-item>
+
+        <el-form-item prop="password">
+          <el-input
+            v-model="ruleForm.password"
+            placeholder="请输入密码"
+            prefix-icon="el-icon-lock"
+            type="password"
+          >
+            <template #suffix>
+              <svg-icon iconClass="eye"></svg-icon>
+            </template>
+          </el-input>
+        </el-form-item>
+
+        <el-form-item prop="code">
+          <el-input
+            v-model="ruleForm.code"
+            placeholder="请输入验证码"
+            prefix-icon="el-icon-mobile-phone"
+            class="yanzhengma"
+          >
+            <template #suffix>
+              <img :src="code" />
+            </template>
+          </el-input>
+        </el-form-item>
+
+        <el-button type="primary" @click="UserLogin">登录</el-button>
+      </el-form>
     </div>
   </div>
 </template>
 
 <script>
+import { createNamespacedHelpers } from "vuex";
+const { mapState: mapUserState, mapActions: mapUserActions } =
+  createNamespacedHelpers("user");
 export default {
   data() {
     return {
-      phone: '',
-      password: '',
-      code: ''
-    }
+      ruleForm: {
+        phone: "admin",
+        password: "admin",
+        code: "",
+      },
+      rules: {
+        phone: [{ required: true, message: "请输入账号", trigger: "blur" }],
+        password: [{ required: true, message: "请输入密码", trigger: "blur" }],
+        code: [{ required: true, message: "请输入验证码", trigger: "blur" }],
+      },
+    };
+  },
+  computed: {
+    ...mapUserState(["code", "token"]),
+  },
+  created() {
+    this.getCode();
   },
 
-  created() {},
-
-  methods: {}
-}
+  methods: {
+    ...mapUserActions(["Login", "getCode"]),
+    async UserLogin() {
+      await this.Login({ ...this.ruleForm });
+      if (this.token !== "") {
+        this.$router.push("/home");
+      }
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -78,29 +121,34 @@ body {
     left: 50%;
     margin-left: -48px;
   }
-  .el-input {
-  height: 50px;
-  margin-bottom: 24px;
-  ::v-deep .el-input__icon{
+  ::v-deep .el-form-item__content {
+    height: 52px;
     line-height: 50px;
+    margin-left: 0px !important;
   }
+  .el-input {
+    height: 50px;
+    margin-bottom: 24px;
+    ::v-deep .el-input__icon {
+      line-height: 50px;
+    }
   }
   ::v-deep .el-input__inner {
-  border-radius: 2px;
-  height: 50px !important;
-  line-height: 50px;
+    color: #999;
+    border-radius: 2px;
+    height: 50px !important;
+    line-height: 50px;
   }
   .el-button {
-  width: 100%;
-  height: 50px;
-  border-radius: 8px;
-  background-color: #6a7cef;
+    width: 100%;
+    height: 50px;
+    border-radius: 8px;
+    background-color: #6a7cef;
   }
-  .yanzhengma{
-    ::v-deep .el-input__suffix{
+  .yanzhengma {
+    ::v-deep .el-input__suffix {
       right: 2px;
     }
   }
 }
-
 </style>
