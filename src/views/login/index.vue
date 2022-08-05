@@ -42,7 +42,7 @@
             class="yanzhengma"
           >
             <template #suffix>
-              <img :src="code" />
+              <img :src="code" @click="changeCode" />
             </template>
           </el-input>
         </el-form-item>
@@ -82,10 +82,12 @@ export default {
   methods: {
     ...mapUserActions(["Login", "getCode"]),
     async UserLogin() {
+      await this.$refs.ruleForm.validate();
       await this.Login({ ...this.ruleForm });
-      if (this.token !== "") {
-        this.$router.push("/home");
-      }
+      this.$router.push("/");
+    },
+    changeCode() {
+      this.getCode();
     },
   },
 };
