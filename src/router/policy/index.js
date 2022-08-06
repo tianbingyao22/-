@@ -8,7 +8,7 @@ export default {
       path: "index",
       name: "Policy",
       component: () => import("@/views/Policy"),
-      meta: { title: "策略管理", icon: "table" },
+      meta: { title: "策略管理", icon: "strategy" },
     },
   ],
 };

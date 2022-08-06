@@ -8,7 +8,7 @@ export default {
       path: "index",
       name: "Report",
       component: () => import("@/views/Report"),
-      meta: { title: "对账统计", icon: "table" },
+      meta: { title: "对账统计", icon: "accountcheck" },
     },
   ],
 };

@@ -61,7 +61,7 @@ export const constantRoutes = [
         path: "home",
         name: "home",
         component: () => import("@/views/home/index"),
-        meta: { title: "帝可得", icon: "dashboard" },
+        meta: { title: "帝可得", icon: "home" },
       },
     ],
   },

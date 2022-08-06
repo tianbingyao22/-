@@ -8,7 +8,7 @@ export default {
       path: "index",
       name: "Order",
       component: () => import("@/views/Order"),
-      meta: { title: "订单管理", icon: "table" },
+      meta: { title: "订单管理", icon: "order" },
     },
   ],
 };
